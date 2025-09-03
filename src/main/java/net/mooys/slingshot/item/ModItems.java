@@ -13,7 +13,7 @@ import net.mooys.slingshot.MooysSlingshot;
 public class ModItems {
 
     public static final Item SLINGSHOT = registerItem("slingshot", new Item(new Item.Settings()));
-
+    public static final Item PEBBLE = registerItem("pebble", new Item(new Item.Settings()));
 
     public static Item registerItem(String name, Item item) {
         return Registry.register(Registries.ITEM, Identifier.of(MooysSlingshot.MOD_ID, name), item);
@@ -25,6 +25,9 @@ public class ModItems {
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(entries -> {
             entries.add(SLINGSHOT);
+        });
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register(entries -> {
+            entries.add(PEBBLE);
         });
     }
 }
