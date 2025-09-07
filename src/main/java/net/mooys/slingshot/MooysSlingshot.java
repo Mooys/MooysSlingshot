@@ -2,6 +2,7 @@ package net.mooys.slingshot;
 
 import net.fabricmc.api.ModInitializer;
 
+import net.mooys.slingshot.entity.ModEntities;
 import net.mooys.slingshot.item.ModItems;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,5 +15,6 @@ public class MooysSlingshot implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		ModItems.registerModItems();
+		ModEntities.registerModEntities();
 	}
 }
