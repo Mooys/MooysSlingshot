@@ -2,6 +2,7 @@ package net.mooys.slingshot.item.custom;
 
 import com.mojang.serialization.DataResult;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.projectile.thrown.EggEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -23,21 +24,35 @@ public class SlingshotItem extends Item {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
-        world.playSound(
-                null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_EGG_THROW, SoundCategory.PLAYERS, 0.5F, 0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F)
-        );
+
+
         if (!world.isClient) {
-            PebbleProjectileEntity pebbleEntity = new PebbleProjectileEntity(world, user);
-            pebbleEntity.setItem(ModItems.PEBBLE.getDefaultStack());
-            pebbleEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 1.5F, 1.0F);
-            world.spawnEntity(pebbleEntity);
-
-
+            //if you have pebbles in your inventory
+            if (user.getInventory().contains(new ItemStack(ModItems.PEBBLE))) {
+                world.playSound(
+                        null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_SNOWBALL_THROW, SoundCategory.PLAYERS, 0.5F, 0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F)
+                );
+                PebbleProjectileEntity pebbleEntity = new PebbleProjectileEntity(world, user);
+                pebbleEntity.setItem(ModItems.PEBBLE.getDefaultStack());
+                pebbleEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 1.5F, 1.0F);
+                world.spawnEntity(pebbleEntity);
+                //decrement the pebbles in your inventory (if player is in creative?)
+                //user.getInventory().removeOne(new ItemStack(ModItems.PEBBLE));
+                for (int i = 0; i < user.getInventory().size(); i++) {
+                    ItemStack stack = user.getInventory().getStack(i);
+                    if (stack.isOf(ModItems.PEBBLE)) {
+                        stack.decrement(1);
+                        break;
+                    }
+                }
+                }
+                return TypedActionResult.success(itemStack, world.isClient());
+            }
+            else{
+                return TypedActionResult.fail(itemStack);
+            }
 
         }
-        return TypedActionResult.success(itemStack, world.isClient());
+
     }
-
-
-}
 
