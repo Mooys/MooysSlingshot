@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "material",
+  "ingredients": [
+    {
+      "tag": "minecraft:pickaxes"
+    },
+    {
+      "item": "minecraft:cobblestone"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "id": "mooys-slingshot:pebble"
+  }
+}
